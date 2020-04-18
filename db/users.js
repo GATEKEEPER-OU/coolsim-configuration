@@ -1,6 +1,5 @@
 const dbUsers = require('../couchdb').use('users');
 
-
 // DB methods
 
 // DB METHODS //

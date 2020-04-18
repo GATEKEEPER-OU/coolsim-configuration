@@ -1,6 +1,5 @@
 const couch = require('./init_couch');
 const initUsers = require('./init_users');
-const dbs = couch.dbs;
 
 
 
@@ -11,13 +10,16 @@ const app = async ()=>{
     await bootstrapDB();
 
     // todo
-}
+};
 
 app();
 
 
 
 
+
+
+// #ZONE functions
 async function bootstrapDB() {
     const numUsers = 10;
 
@@ -46,3 +48,4 @@ async function bootstrapUsers(num) {
     });
     return r;
 }
+// #ZONEEND functions
