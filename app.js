@@ -3,6 +3,14 @@ const initUsers = require('./init_users');
 
 
 
+// todo create simulation
+// given number of roles and age
+// bbox
+// size of population
+// subscribe users to the simulation
+// spacename of the simulation that can be shared by multiple simulations
+
+
 
 // init dbs
 const app = async ()=>{

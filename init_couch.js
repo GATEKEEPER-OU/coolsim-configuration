@@ -2,7 +2,7 @@ const couch = require('./couchdb');
 const util = require('util');
 const allSettled = require('promise.allsettled');
 
-const databases = ['planner','users','events','messages'];
+const databases = ['simulations','planners','users','events','messages'];
 
 const destroy  = util.promisify(couch.db.destroy);
 const create  = util.promisify(couch.db.create);
