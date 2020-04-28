@@ -1,27 +1,33 @@
-const couch = require('./couchdb');
-const util = require('util');
-const allSettled = require('promise.allsettled');
+import {CouchDB as couch} from "./couchdb.js";
+
+import util from 'util';
+import allSettled from 'promise.allsettled';
 
 const databases = ['simulations','planners','users','events','messages'];
 
-const destroy  = util.promisify(couch.db.destroy);
-const create  = util.promisify(couch.db.create);
+const destroyDB  = util.promisify(couch.db.destroy);
+const createDB  = util.promisify(couch.db.create);
 
-exports.init = async () => initDBs()
+
+
+export const init = async () => initDBs()
     .then(results => {
         // console.log(results);
         return results.forEach(result=>{
+            console.log("----------------",result);
             if(result.status === 'fulfilled'){
-                console.log(`${result.value.message}`);
+                console.log(`${result.value}`);
             } else {
-                console.error(`${result.reason.error.message}`);
-                throw Error(result.reason.error.message);
+                console.error(`${result.reason}`);
+                throw Error(result.reason);
             }
         })
     });
 
-exports.reset = resetDatabase;
-exports.dbs = databases;
+export const reset = resetDatabase;
+export const dbs = databases;
+export const create = createDatabase;
+export const destroy = destroyDatabase;
 
 
 
@@ -32,23 +38,23 @@ async function initDBs() {
 }
 
 async function resetDatabase(db) {
-        let destroy = await destroyDatabase(db);
-        let create = await createDatabase(db);
-        return Promise.all([destroy,create])
-            .then(results => {
-                // console.log(results);
-                return results.reduce( (result,partial)=> {
-                    return partial.status !== 'ok' ? partial : result;
-                },{status:'ok',
-                    message:`Reset db ${db} OK`,
-                    statusCode: 200});
-            }).catch(err=>Promise.reject(err));
+    let destroy = await destroyDatabase(db);
+    let create = await createDatabase(db);
+    return Promise.all([destroy,create])
+        .then(results => {
+            // console.log(results);
+            return results.reduce( (result,partial)=> {
+                return partial.status !== 'ok' ? partial : result;
+            },{status:'ok',
+                message:`Reset db ${db} OK`,
+                statusCode: 200});
+        }).catch(err=>Promise.reject(err));
 }
 
 async function destroyDatabase(db) {
-    return destroy(db)
+    return destroyDB(db)
         .then(_=>{
-            // console.log(`Deleted db ${db}`);
+            console.log(`Deleted db ${db}`);
             return Promise.resolve({
                 status:'ok',
                 message:`Deleted db ${db}`,
@@ -57,27 +63,23 @@ async function destroyDatabase(db) {
         })
         .catch((err) => {
             if (err && err.statusCode == 404) {
-                // console.log('nothing to delete');
+                console.log('nothing to delete');
                 return Promise.resolve({
                     status:'ok',
                     message:`Deleted db ${db}`,
                     statusCode: 200
                 });
             } else {
-                return Promise.reject({
-                    error: err,
-                    message: `Error deleting db ${db}`,
-                    statusCode: 400,
-                    status: 'error'
-                });
+                console.log("??????????",err.reason);
+                return Promise.reject({err});
             }
-    });
+        });
 }
 
 async function createDatabase(db) {
-    return create(db)
+    return createDB(db)
         .then(_=>{
-            // console.log(`Created db ${db}`);
+            console.log(`Created db ${db}`);
             return Promise.resolve({
                 status:'ok',
                 message:`Created db ${db}`,
@@ -86,16 +88,30 @@ async function createDatabase(db) {
         })
         .catch(err => {
             if (err && err.statusCode == 412) {
-                // console.log('nothing to create');
+                console.log('nothing to create',err);
+                return Promise.resolve({
+                    status:'ok',
+                    message:`${db} already exists`,
+                    statusCode:200
+                })
             } else {
-                console.error('create error', err);
-                return Promise.reject({
-                    error: err,
-                    message: `Error creating db ${db}`,
-                    statusCode: 400,
-                    status: 'error'
-                });
+                console.error('create error', err.reason);
+                return Promise.reject({err});
             }
         });
 }
 // #ENDZONE
+
+
+async function test() {
+    await destroyDatabase('test');
+    console.log('destroy database ok!');
+    await createDatabase('test');
+    console.log('create database ok!');
+    await resetDatabase('test');
+    console.log('reset database ok!');
+    await destroyDatabase('test');
+    console.log('cleaning test ok!');
+}
+
+test();

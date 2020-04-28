@@ -1,7 +1,7 @@
-const couch = require('./init_couch');
-const initUsers = require('./init_users');
+import * as db from "./init_couch.js";
+import * as users from './init_users.js';
 
-
+// console.log("------------",db);
 
 // todo create simulation
 // given number of roles and age
@@ -11,6 +11,8 @@ const initUsers = require('./init_users');
 // spacename of the simulation that can be shared by multiple simulations
 
 
+const numUsers = 10;
+
 
 // init dbs
 const app = async ()=>{
@@ -18,6 +20,7 @@ const app = async ()=>{
     await bootstrapDB();
 
     // todo
+    await bootstrapUsers(numUsers);
 };
 
 app();
@@ -29,31 +32,28 @@ app();
 
 // #ZONE functions
 async function bootstrapDB() {
-    const numUsers = 10;
-
-    let r = await couch.init().then(
+    let r = await db.init().then(
         async _=>{
             console.log(`All databases initalized!`);
             return true;
         }).catch(async err=>{
-            console.error(err);
-            return err;
-        });
 
-    r = await bootstrapUsers(numUsers);
-
+        console.error(err);
+        return err;
+    });
 
     return r
 }
 
 async function bootstrapUsers(num) {
-    let r = initUsers.init(num).then(status=>{
+    let r = users.init(num).then(status=>{
         console.log(status);
         return status;
     }).catch(err=>{
         console.error(err);
         return err;
     });
+
     return r;
 }
 // #ZONEEND functions

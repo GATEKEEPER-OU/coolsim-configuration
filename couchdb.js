@@ -1,3 +1,4 @@
-const nano = require('nano');
+// setup databases
+import Nano from 'nano';
 
-module.exports = nano(process.env.COUCHDB_URL || 'http://127.0.0.1:5984');
+export const CouchDB = Nano('http://127.0.0.1:5984');

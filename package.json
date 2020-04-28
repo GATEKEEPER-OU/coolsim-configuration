@@ -1,0 +1,34 @@
+{
+  "name": "Bootstrap",
+  "version": "1.0.0",
+  "description": "The bootstrap module of the GK community planner uses CouchDB [nano](https://github.com/apache/couchdb-nano).",
+  "main": "app.js",
+  "dependencies": {
+    "async": "^3.2.0",
+    "axios": "^0.19.2",
+    "boom": "^7.3.0",
+    "joi": "^14.3.1",
+    "nano": "^8.2.2",
+    "object-versions": "^1.0.0",
+    "promise.allsettled": "^1.0.2",
+    "turf": "^3.0.14",
+    "util": "^0.12.2",
+    "utils": "^0.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrPollo/Community-Planner-Bootstrap.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DrPollo/Community-Planner-Bootstrap/issues"
+  },
+  "homepage": "https://github.com/DrPollo/Community-Planner-Bootstrap#readme",
+  "type":"module"
+}

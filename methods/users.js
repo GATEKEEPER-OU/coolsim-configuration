@@ -1,10 +1,13 @@
-const dbUsers = require('../couchdb').use('users');
+import {CouchDB} from'../couchdb.js';
+
+// console.log(CouchDB);
+const dbUsers = CouchDB.use('users');
 
 // DB methods
 
 // DB METHODS //
-exports.list = dbUsers.list().then(users=>()=>users,err=>()=>Error(err));
-exports.counter = async () => {
+export const list = dbUsers.list().then(users=>()=>users,err=>()=>Error(err));
+export const counter = async () => {
     let users = await dbUsers.list().then(async users=>{
         console.log(`Found ${users.total_rows} users in the Users DB`);
         return users.total_rows;
@@ -15,10 +18,10 @@ exports.counter = async () => {
 
 
 // USER METHODS //
-exports.create = (user, cb) => dbUsers.insert(user, user.userName, cb);
-exports.delete = ({userName,_rev}, cb) => dbUsers.destroy(userName,_rev, cb);
+export const create = (user, cb) => dbUsers.insert(user, user.userName, cb);
+export const deleteUser = ({userName,_rev}, cb) => dbUsers.destroy(userName,_rev, cb);
 
-exports.update = (user, cb) => {
+export const update = (user, cb) => {
     user.get(user._id, errors.wrapNano(function (err,currentUser) {
         if(err){
             cb(err);
@@ -29,7 +32,7 @@ exports.update = (user, cb) => {
     }));
 };
 
-exports.updateDiff = (userDiff, cb) => {
+export const updateDiff = (userDiff, cb) => {
     merge();
 
     function merge() {

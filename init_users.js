@@ -1,7 +1,7 @@
 // const async = require('async');
-const axios = require('axios');
-const turf = require('@turf/random');
-const dbUsers = require('./db/users');
+import axios from 'axios';
+import random from '@turf/random';
+import * as dbUsers from './methods/users.js';
 
 
 const randomGenerator = axios.create({
@@ -15,49 +15,49 @@ const randomGenerator = axios.create({
 const bbox = [-0.7138101195,52.0217227662,-0.7044157712,52.0275801162];
 
 const roles = [
-    {label:'gp',ratio:0.0001},
-    {label:'nurse',ratio:0.005,min:3},
-    {label:'social_worker',ratio:0.001,min:1},
-    {label:'community_worker',ratio:0.01,min:1},
-    {label:'ward',ratio:0.1},
+    {label:'gp',rate:0.0001},
+    {label:'nurse',rate:0.005,min:3},
+    {label:'social_worker',rate:0.001,min:1},
+    {label:'community_worker',rate:0.01,min:1},
+    {label:'ward',rate:0.1},
     {label:'neighbour',type:'default'}
 ];
 const rolesMap = roles.reduce((partial, role, index)=>{
-    // rolesMap
-    // discount: number of min that must be discount to recover the distribution
-    // ratio is cumulative, and closes with 1 for default
-    // ratio is used with a random number between 0 and 1
-    partial.map
-        .set(role.label,Object
-            .assign({},role,{
-                counter:0,
-                discount: role.min ? role.min : 0,
-                // sum ratios or return 1 for the default
-                ratio: role.type === 'default' ? 1 : (partial.ratio+=role.ratio)
-            }));
+        // rolesMap
+        // discount: number of min that must be discount to recover the distribution
+        // rate is cumulative, and closes with 1 for default
+        // rate is used with a random number between 0 and 1
+        partial.map
+            .set(role.label,Object
+                .assign({},role,{
+                    counter:0,
+                    discount: role.min ? role.min : 0,
+                    // sum rates or return 1 for the default
+                    rate: role.type === 'default' ? 1 : (partial.rate+=role.rate)
+                }));
         // console.log(rMap);
-    return partial;
+        return partial;
     },
-    {map:new Map(),ratio:0}).map;
+    {map:new Map(),rate:0}).map;
 // console.log(rolesMap);
-// ratiosMap Map({ratio: label},...)
-const ratiosMap = roles.reduce ( (partial, role) => {
+// ratesMap Map({rate: label},...)
+const ratesMap = roles.reduce ( (partial, role) => {
     let roleMap = rolesMap.get(role.label);
-    let ratio = roleMap.ratio;
-    return partial.set(ratio,role.label);
+    let rate = roleMap.rate;
+    return partial.set(rate,role.label);
 }, new Map());
 // console.log(rolesMap);
 
 const skills = [
-    {label:'first_aid', ratio:0.1, roles: new Set(['gp','nurse','ward']) },
-    {label:'counseling', ratio:0.05, roles: new Set(['social_worker','community_worker']) },
-    {label:'driving', ratio:0.3},
-    {label:'fitness', ratio:0.05},
-    {label:'nutrition', ratio:0.05, roles: new Set(['gp','nurse','social_worker']) },
-    {label:'cleaning', ratio:0.3},
-    {label:'running_errands', ratio:0.95},
-    {label:'calling', ratio:0.95, roles: new Set(['gp','nurse','ward','social_worker','community_worker']) },
-    {label:'cooking', ratio:0.3},
+    {label:'first_aid', rate:0.1, roles: new Set(['gp','nurse','ward']) },
+    {label:'counseling', rate:0.05, roles: new Set(['social_worker','community_worker']) },
+    {label:'driving', rate:0.3},
+    {label:'fitness', rate:0.05},
+    {label:'nutrition', rate:0.05, roles: new Set(['gp','nurse','social_worker']) },
+    {label:'cleaning', rate:0.3},
+    {label:'running_errands', rate:0.95},
+    {label:'calling', rate:0.95, roles: new Set(['gp','nurse','ward','social_worker','community_worker']) },
+    {label:'cooking', rate:0.3},
 ];
 
 
@@ -65,17 +65,17 @@ const skills = [
 
 
 
-exports.init = async (usersCounter = 0) => {
+export const init = async (usersCounter = 0) => {
     let existingUsers = await dbUsers.counter();
     // console.log(`found ${existingUsers} users ==================`);
     const delta = usersCounter - existingUsers;
     console.log(`To be generated ${delta > 0 ? delta : 0} users`);
-    return new Promise( async (resolve) => {
+    return new Promise( async (resolve,reject) => {
         if( delta <= 0){
             console.log(`Requested ${usersCounter} users already available`);
             resolve('Users already available');
         } else {
-            return generate(delta);
+            return generate(delta,resolve,reject);
         }
     });
 };
@@ -83,7 +83,7 @@ exports.init = async (usersCounter = 0) => {
 
 
 // generate # random users
-async function generate(totalUsers){
+export async function generate(totalUsers,resolve,reject){
     const roleGenerator = getRole();
     const locationGenerator = getLocation(bbox);
     const userGenerator = getUser();
@@ -112,7 +112,7 @@ async function generate(totalUsers){
             if(user.value && user.value.length > 0){
                 user = user.value[0];
             }else{
-                return Promise.reject('Not possible to generate users');
+                return reject('Not possible to generate users');
             }
 
             // console.log(role,location,user);
@@ -129,14 +129,16 @@ async function generate(totalUsers){
 
             await dbUsers.create(user,(err)=>{
                 if(err){
-                    return Promise.reject(err);
+                    return reject(err);
                 }
             });
             if (process.stdout.clearLine) { process.stdout.clearLine(); }
             console.log(`Generated users: ${i + 1} of ${totalUsers}`);
         }
+        console.log(`Generated ${totalUsers} users`);
+        resolve(`Generated ${totalUsers} users`);
     }else{
-        return Promise.reject('Not possible to generate users');
+        return reject('Not possible to generate users');
     }
 }
 
@@ -145,8 +147,8 @@ async function generate(totalUsers){
 // #ZONE GENERATORS
 
 // generate random user
-async function* getUser(num = 1) {
-    const params = `/api?nat=gb&results=${num}`;
+export async function* getUser(num = 1) {
+    const params = `?nat=gb&results=${num}`;
     while(true){
         let users = await randomGenerator.get(params).then(({status,statusText,data})=>{
             // console.log(`Status: ${statusText}`);
@@ -161,6 +163,7 @@ async function* getUser(num = 1) {
             }
             return new Error(`Couldn't get users :(`);
         }).catch((err)=>{
+            console.log("ERROR in getting users from the random service:",err);
             return err;
         });
         // console.log(`Got users ${users.length}`);
@@ -169,7 +172,7 @@ async function* getUser(num = 1) {
 }
 
 // generator role
-function* getRole() {
+export function* getRole() {
     // init
     let indexRole = 0;
     // generate mins
@@ -195,18 +198,18 @@ function* getRole() {
         if(!role.type){return defaultRole;}
         return role.label;
     },null);
-    const ratios = ratiosMap.keys();
+    const rates = ratesMap.keys();
     // console.log('default role ',defaultRole);
     while(true){
-        // generate a ratio (between 0 and 1)
-        let roleRatio = Math.random();
-        // if new ratio is higher than the previous && lower than the math.random
-        // then new ratio is the new candidate
-        let keyRatio = ratios.reduce((r,v) => {
-            return r < v && v <= roleRatio ? v : r;
+        // generate a rate (between 0 and 1)
+        let rolerate = Math.random();
+        // if new rate is higher than the previous && lower than the math.random
+        // then new rate is the new candidate
+        let keyrate = rates.reduce((r,v) => {
+            return r < v && v <= rolerate ? v : r;
         }, 0);
         // get label of the role
-        let role = rolesMap.get(keyRatio);
+        let role = rolesMap.get(keyrate);
         // lower discount
         rolesMap.get(role).discount--;
         // send new role
@@ -215,28 +218,28 @@ function* getRole() {
 }
 
 // generate random location
-function* getLocation (bbox) {
+export function* getLocation (bbox) {
     while(true){
         // return [longitude,latitude]
-        let position = turf.randomPosition(bbox);
+        let position = random.randomPosition(bbox);
         yield {coordinates: {longitude:position[0].toString(),latitude:position[1].toString()} };
     }
 }
 
 // generate skills
-function* getSkills() {
+export function* getSkills() {
     const skillsMap = skills.reduce((partial,skill)=>{
-        return partial.set(skill.label,{ratio:skill.ratio,counter:0});
+        return partial.set(skill.label,{rate:skill.rate,counter:0});
     },new Map());
     let role = yield;
     // console.log('first yield',role);
     while(true){
         let userSkills = skills.reduce((partial,skill)=>{
             // console.log('--------',skill);
-            let ratio = Math.random();
+            let rate = Math.random();
             let map = skillsMap.get(skill.label);
-            if(ratio <= map.ratio || (skill.roles && skill.roles.has(role)) ){
-                map.ratio ++;
+            if(rate <= map.rate || (skill.roles && skill.roles.has(role)) ){
+                map.rate ++;
                 return partial.concat(skill.label);
             }
             return partial;
@@ -246,3 +249,11 @@ function* getSkills() {
 }
 
 // #ENDZONE GENERATORS
+
+
+
+async function test() {
+    // test
+    await init(10);
+}
+test();
