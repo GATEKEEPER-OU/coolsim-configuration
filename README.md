@@ -11,7 +11,7 @@ It generates and populates a set of databases:
 
 ## Folders
 
-- app.js is the main
+- index.js is the main
 - db/ includes a methods file for each db
 - views // todo
 
