@@ -31,8 +31,9 @@ export default class Users{
                 let user = await userGenerator.next();
                 // check if there is at least a person in the generated list
                 // get the first one of the list
+                // console.log("user",user.value[0]);
                 if(user){
-                    users.push(user.value);
+                    users.push(user.value[0]);
                 }else{
                     return new Error('Not possible to generate users');
                 }

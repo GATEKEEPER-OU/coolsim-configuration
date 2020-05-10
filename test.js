@@ -10,7 +10,7 @@ import Users from './users.js';
 // spacename of the simulation that can be shared by multiple simulations
 
 
-const numUsers = 10;
+const numUsers = 2;
 
 
 // init dbs
