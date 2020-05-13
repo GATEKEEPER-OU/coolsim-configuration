@@ -24,7 +24,7 @@ export default class Users{
         let users = [];
         // console.log(`Done initializing generators`);
         if(userGenerator.next){
-            console.log(`Start generating users...`);
+            // console.log(`Start generating users...`);
 
             for( let i = 0; i < totalUsers; i++ ){
                 // get a user
@@ -39,9 +39,9 @@ export default class Users{
                 }
                 // console.log(user);
 
-                console.log(`Generated users: ${i + 1} of ${totalUsers}`);
+                // console.log(`Generated users: ${i + 1} of ${totalUsers}`);
             }
-            console.log(`Generated ${totalUsers} users`);
+            // console.log(`Generated ${totalUsers} users`);
         }else{
             return new Error('Not possible to generate users');
         }
