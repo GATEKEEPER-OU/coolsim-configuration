@@ -1,5 +1,6 @@
 import USER from "./User/index.js";
 import DEVICE from "./Device/index.js";
+import LOCATION from "./Location/index.js";
 
 
 // todo create entry in the master db with list of simulations
@@ -9,7 +10,8 @@ import DEVICE from "./Device/index.js";
 
 const Bootstrap = {
     user: USER,
-    device: DEVICE
+    device: DEVICE,
+    location: LOCATION
 };
 
 export default Bootstrap;

@@ -12,6 +12,9 @@
 
 const STORES = new Map(Object.entries(
     {
+        simulations:{
+            name:"http://localhost:5985/simulations"
+        },
         details:{
             simulation:true,
             to:"http://localhost:5985/",
