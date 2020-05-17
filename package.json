@@ -2,19 +2,8 @@
   "name": "Bootstrap",
   "version": "1.0.0",
   "description": "The bootstrap module of the GK community planner uses CouchDB [nano](https://github.com/apache/couchdb-nano).",
-  "main": "app.js",
+  "main": "index.js",
   "dependencies": {
-    "async": "^3.2.0",
-    "axios": "^0.19.2",
-    "boom": "^7.3.0",
-    "joi": "^14.3.1",
-    "nano": "^8.2.2",
-    "node-ziggurat": "0.0.2",
-    "object-versions": "^1.0.0",
-    "promise.allsettled": "^1.0.2",
-    "turf": "^3.0.14",
-    "util": "^0.12.2",
-    "utils": "^0.3.1"
   },
   "devDependencies": {},
   "scripts": {
