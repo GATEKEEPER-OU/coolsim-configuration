@@ -1,8 +1,8 @@
-import Users from "./users.js";
+import USER from "./User/index.js";
 
 
 const Bootstrap = {
-    users: Users
+    user: USER
 };
 
 export default Bootstrap;

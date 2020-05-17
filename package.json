@@ -9,6 +9,7 @@
     "boom": "^7.3.0",
     "joi": "^14.3.1",
     "nano": "^8.2.2",
+    "node-ziggurat": "0.0.2",
     "object-versions": "^1.0.0",
     "promise.allsettled": "^1.0.2",
     "turf": "^3.0.14",
@@ -30,5 +31,5 @@
     "url": "https://github.com/DrPollo/Community-Planner-Bootstrap/issues"
   },
   "homepage": "https://github.com/DrPollo/Community-Planner-Bootstrap#readme",
-  "type":"module"
+  "type": "module"
 }
