@@ -12,33 +12,21 @@
 
 const STORES = new Map(Object.entries(
     {
-        simulation:{
-            details:{
-                simulation:true,
-                to:"http://localhost:5985/",
-                name:"simulation",
-                repParams:{
-                    live:true,
-                    retry:true,
-                    batch_size:100,
-                    batches_limit:5.
-                    // since:"now"
-                }
+        details:{
+            simulation:true,
+            to:"http://localhost:5985/",
+            name:"details",
+            repParams:{
+                live:true,
+                retry:true,
+                batch_size:100,
+                batches_limit:5.
+                // since:"now"
             }
         },
-        viewer:{
-            agentsLogs:{
-                name:"http://localhost:5985/agent-logs"
-            },
-            agentsStates:{
-                name:"http://localhost:5985/agent-states"
-            },
-            areaLogs:{
-                name:"http://localhost:5985/area-logs",
-            },
-            places:{
-                name:"http://localhost:5985/area-places"
-            },
+        logs:{
+            simulation:true,
+            name:"http://localhost:5985/logs",
         }
     },
 ));
