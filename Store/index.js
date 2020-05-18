@@ -13,23 +13,22 @@
 const STORES = new Map(Object.entries(
     {
         simulations:{
-            name:"http://localhost:5985/simulations"
+            name:"http://cool:sim@localhost:5985/simulations"
         },
-        details:{
+        diary:{
             simulation:true,
-            to:"http://localhost:5985/",
-            name:"details",
-            repParams:{
-                live:true,
-                retry:true,
-                batch_size:100,
-                batches_limit:5.
-                // since:"now"
-            }
+            name:"http://cool:sim@localhost:5985/diary",
+            // repParams:{
+            //     live:true,
+            //     retry:true,
+            //     batch_size:100,
+            //     batches_limit:5.
+            //     // since:"now"
+            // }
         },
         logs:{
             simulation:true,
-            name:"http://localhost:5985/logs",
+            name:"http://cool:sim@localhost:5985/logs",
         }
     },
 ));
