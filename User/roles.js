@@ -1,4 +1,4 @@
-import Utils from '../../Utils/index.js';
+import Utils from '../../coolsim-utilities/index.js';
 
 
 // agent's roles

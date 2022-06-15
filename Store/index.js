@@ -13,11 +13,11 @@
 const STORES = new Map(Object.entries(
     {
         simulations:{
-            name:"http://cool:sim@localhost:5985/simulations"
+            name:"simulations" //"http://cool:sim@localhost:5984/simulations"
         },
         diary:{
             simulation:true,
-            name:"http://cool:sim@localhost:5985/diary",
+            name:"diary",
             // repParams:{
             //     live:true,
             //     retry:true,
@@ -28,7 +28,7 @@ const STORES = new Map(Object.entries(
         },
         logs:{
             simulation:true,
-            name:"http://cool:sim@localhost:5985/logs",
+            name:"logs",
         }
     },
 ));

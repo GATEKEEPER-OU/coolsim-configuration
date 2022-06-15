@@ -1,5 +1,5 @@
 {
-  "name": "Bootstrap",
+  "name": "coolsim-configurations",
   "version": "1.0.0",
   "description": "The bootstrap module of the GK community planner uses CouchDB [nano](https://github.com/apache/couchdb-nano).",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DrPollo/Community-Planner-Bootstrap.git"
+    "url": "git+https://github.com/GATEKEEPER-OU/coolsim-configurations.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DrPollo/Community-Planner-Bootstrap/issues"
+    "url": "https://github.com/GATEKEEPER-OU/coolsim-configurations/issues"
   },
-  "homepage": "https://github.com/DrPollo/Community-Planner-Bootstrap#readme",
+  "homepage": "https://github.com/GATEKEEPER-OU/coolsim-configurations#readme",
   "type": "module"
 }
