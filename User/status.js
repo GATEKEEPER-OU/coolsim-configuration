@@ -1,4 +1,4 @@
-import Utils from '../../coolsim-utilities/index.js';
+import Utils from '../../utilities/index.js';
 // agent's states
 // state: ['active','independent','dependent','death']
 // label: name and key
