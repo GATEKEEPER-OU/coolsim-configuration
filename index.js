@@ -12,19 +12,19 @@ import LOCATION from "./Location/index.js";
 // get > return config 
 // return config 
 
-export default class Config {
+// export default class Config {
     
-    constructor (simulationId){
-        // check or create new simulation
-    }
-    // set setAge(age){
-    // }
-    // get list(){
-    // };
-    static get simulations(){
-        // return simulations in store
-    }
-}
+//     constructor (simulationId){
+//         // check or create new simulation
+//     }
+//     // set setAge(age){
+//     // }
+//     // get list(){
+//     // };
+//     static get simulations(){
+//         // return simulations in store
+//     }
+// }
 
 
 
