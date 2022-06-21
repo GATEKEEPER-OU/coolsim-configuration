@@ -14,16 +14,20 @@ const STORES = new Map(Object.entries(
     {
         simulations:{
             name:"simulations", //"http://cool:sim@localhost:5984/simulations"
-            mode:"memory"
+            mode:"memory",
+            format:"default" // or fhir
         },
-        diary:{
+        diary:{ // agent manager
             simulation:true,
             name:"diary",
-            mode:"file" //file
+            mode:"file", // e.g., file, memory
+            format:"fhir"
         },
         logs:{
             simulation:true,
             name:"logs",
+            mode:"file",
+            format:"default"
         }
     },
 ));

@@ -3,6 +3,13 @@
 // type: ['mental','social','physical','behavioural']
 // duration: ['temporary','permanent','chronic'] // temporary can only get better, permanent can only get worse, chronic cannot be deleted
 // severity: 0 - 1 // 0 - 0.3 light, 0.3 - 0.6 mild, 0.6 - 1 sever
+// coding: [ // optional, array of descriptions of conditions in coding system(s)
+//  {
+//    system: "https://loinc.org",
+//    display: "Diabetes mellitus"
+//    code: "45636-8"
+//  }
+// ]
 // progression: {
 //      scale: a time scale, e.g. 'day' 'month' ,
 //      rate: 0 to 1, // probability of weight increment
